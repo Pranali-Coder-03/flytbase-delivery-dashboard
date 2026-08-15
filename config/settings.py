@@ -23,6 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-o+5+xgkd=3wakenzo^^b6adtnnft3^8&p-a%lekue1h41z1mof'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+SECRET_KEY = '@h&3lc#58_ec$o(^%xi5%nrta+4f8b-&4vn0isaz$a(h2m3rgh'
 DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
@@ -122,10 +123,6 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
+
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
