@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>
+        {{ project.name }} - Kanban
+    </title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .header {
+            max-width: 1400px;
+            margin: auto;
+            margin-bottom: 30px;
+        }
+
+        .header a {
+            text-decoration: none;
+            color: #555;
+        }
+
+        h1 {
+            margin-bottom: 5px;
+        }
+
+        .customer {
+            color: #666;
+        }
+
+        .board {
+
+            max-width: 1400px;
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 20px;
+
+        }
+
+        .column {
+
+            background: #e9edf2;
+
+            border-radius: 12px;
+
+            padding: 15px;
+
+            min-height: 500px;
+
+        }
+
+        .column-header {
+
+            font-weight: bold;
+
+            font-size: 16px;
+
+            margin-bottom: 15px;
+
+        }
+
+        .task {
+
+            background: white;
+
+            border-radius: 10px;
+
+            padding: 15px;
+
+            margin-bottom: 12px;
+
+            box-shadow:
+                0 2px 5px
+                rgba(0,0,0,0.05);
+
+        }
+
+        .task-name {
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+
+        }
+
+        .milestone {
+
+            font-size: 13px;
+
+            color: #6b7280;
+
+            margin-bottom: 8px;
+
+        }
+
+        .owner {
+
+            font-size: 13px;
+
+            color: #555;
+
+        }
+
+        .due {
+
+            font-size: 12px;
+
+            color: #888;
+
+            margin-top: 8px;
+
+        }
+
+        .empty {
+
+            color: #888;
+
+            font-size: 14px;
+
+            text-align: center;
+
+            margin-top: 30px;
+
+        }
+
+        .back {
+
+            display: inline-block;
+
+            margin-top: 20px;
+
+            padding: 10px 15px;
+
+            background: #111827;
+
+            color: white;
+
+            border-radius: 7px;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="header">
+
+    <a href="{% url 'project_detail' project.id %}">
+        ← Back to Project
+    </a>
+
+    <h1>
+        {{ project.name }}
+    </h1>
+
+    <div class="customer">
+
+        {{ project.customer_name }}
+
+    </div>
+
+</div>
+
+
+<div class="board">
+
+
+    <!-- OPEN -->
+
+    <div class="column">
+
+        <div class="column-header">
+
+            🟢 OPEN
+
+        </div>
+
+
+        {% for task in kanban.OPEN %}
+
+        <div class="task">
+
+            <div class="task-name">
+
+                {{ task.name }}
+
+            </div>
+
+            <div class="milestone">
+
+                {{ task.milestone.name }}
+
+            </div>
+
+            <div class="owner">
+
+                {% if task.owner %}
+                    {{ task.owner.name }}
+                {% else %}
+                    Unassigned
+                {% endif %}
+
+            </div>
+
+            <div class="due">
+
+                Due:
+                {{ task.due_date|date:"d M Y" }}
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty">
+
+            No open tasks
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+
+    <!-- IN PROGRESS -->
+
+    <div class="column">
+
+        <div class="column-header">
+
+            🟡 IN PROGRESS
+
+        </div>
+
+
+        {% for task in kanban.IN_PROGRESS %}
+
+        <div class="task">
+
+            <div class="task-name">
+
+                {{ task.name }}
+
+            </div>
+
+            <div class="milestone">
+
+                {{ task.milestone.name }}
+
+            </div>
+
+            <div class="owner">
+
+                👤
+                {% if task.owner %}
+                    {{ task.owner.name }}
+                {% else %}
+                    Unassigned
+                {% endif %}
+
+            </div>
+
+            <div class="due">
+
+                Due:
+                {{ task.due_date|date:"d M Y" }}
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty">
+
+            No tasks in progress
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+
+    <!-- BLOCKED -->
+
+    <div class="column">
+
+        <div class="column-header">
+
+            🔴 BLOCKED
+
+        </div>
+
+
+        {% for task in kanban.BLOCKED %}
+
+        <div class="task">
+
+            <div class="task-name">
+
+                {{ task.name }}
+
+            </div>
+
+            <div class="milestone">
+
+                {{ task.milestone.name }}
+
+            </div>
+
+            <div class="owner">
+
+                
+                {% if task.owner %}
+                    {{ task.owner.name }}
+                {% else %}
+                    Unassigned
+                {% endif %}
+
+            </div>
+
+            <div class="due">
+
+                Due:
+                {{ task.due_date|date:"d M Y" }}
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty">
+
+            No blocked tasks
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+
+    <!-- DONE -->
+
+    <div class="column">
+
+        <div class="column-header">
+
+            🔵 DONE
+
+        </div>
+
+
+        {% for task in kanban.DONE %}
+
+        <div class="task">
+
+            <div class="task-name">
+
+                {{ task.name }}
+
+            </div>
+
+            <div class="milestone">
+
+                {{ task.milestone.name }}
+
+            </div>
+
+            <div class="owner">
+
+                
+                {% if task.owner %}
+                    {{ task.owner.name }}
+                {% else %}
+                    Unassigned
+                {% endif %}
+
+            </div>
+
+            <div class="due">
+
+                Due:
+                {{ task.due_date|date:"d M Y" }}
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty">
+
+            No completed tasks
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+</div>
+
+
+<div style="max-width:1400px;margin:auto;">
+
+    <a
+        class="back"
+        href="{% url 'project_detail' project.id %}"
+    >
+
+        Back to Project
+
+    </a>
+
+</div>
+
+
+</body>
+
+</html>

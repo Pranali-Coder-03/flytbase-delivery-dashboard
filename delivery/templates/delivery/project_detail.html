@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>{{ project.name }} - FlytBase</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .header {
+            background: white;
+            padding: 25px 40px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .header a {
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+        .container {
+            padding: 30px 40px;
+        }
+
+        .project-header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 25px;
+        }
+
+        .project-header h1 {
+            margin: 0 0 8px 0;
+        }
+
+        .customer {
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .on-track {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .at-risk {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .blocked {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .completed {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .owners {
+            margin-top: 20px;
+        }
+
+        .owner {
+            display: inline-block;
+            background: #f3f4f6;
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin: 5px 5px 0 0;
+            font-size: 13px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 25px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        .milestone {
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            padding: 18px;
+        }
+
+        .milestone-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .milestone-name {
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        .milestone-status {
+            font-size: 12px;
+            font-weight: bold;
+            padding: 5px 9px;
+            border-radius: 15px;
+            background: #f3f4f6;
+        }
+
+        .task {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .task-status {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .done {
+            color: #16a34a;
+        }
+
+        .progress {
+            color: #ca8a04;
+        }
+
+        .task-blocked {
+            color: #dc2626;
+        }
+
+        .open {
+            color: #6b7280;
+        }
+
+        .issue {
+            padding: 15px 0;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .issue:last-child {
+            border-bottom: none;
+        }
+
+        .issue-title {
+            font-weight: bold;
+        }
+
+        .issue-category {
+            display: inline-block;
+            background: #f3f4f6;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 11px;
+            margin-top: 6px;
+        }
+
+        .issue-meta {
+            color: #6b7280;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .update {
+            padding: 15px 0;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .update:last-child {
+            border-bottom: none;
+        }
+
+        .update-time {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 7px;
+        }
+
+        .update-text {
+            line-height: 1.5;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 15px;
+            background: #111827;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="header">
+
+    <a href="{% url 'dashboard' %}">
+        ← Back to Projects
+    </a>
+
+</div>
+
+
+<div class="container">
+
+
+    <!-- PROJECT HEADER -->
+
+    <div class="project-header">
+
+        <h1>
+            {{ project.name }}
+        </h1>
+<div style="margin: 20px 0; display: flex; gap: 10px;">
+
+    <a href="{% url 'project_update' project.id %}"
+       style="
+           background: #111827;
+           color: white;
+           padding: 12px 18px;
+           border-radius: 8px;
+           text-decoration: none;
+       ">
+         Process Customer Update
+    </a>
+<a href="{% url 'generate_project_report' project.id %}"
+   style="
+       background: #2563eb;
+       color: white;
+       padding: 12px 18px;
+       border-radius: 8px;
+       text-decoration: none;
+   ">
+     Generate Project Report
+</a>
+    <a href="{% url 'project_kanban' project.id %}"
+       style="
+           background: #374151;
+           color: white;
+           padding: 12px 18px;
+           border-radius: 8px;
+           text-decoration: none;
+       ">
+         Kanban
+    </a>
+
+    <a href="{% url 'customer_project_detail' project.id %}"
+       style="
+           background: #6b7280;
+           color: white;
+           padding: 12px 18px;
+           border-radius: 8px;
+           text-decoration: none;
+       ">
+         Customer View
+    </a>
+
+</div>
+        <div class="customer">
+            {{ project.customer_name }}
+        </div>
+
+
+        {% if project.status == "ON_TRACK" %}
+
+            <span class="status on-track">
+                🟢 ON TRACK
+            </span>
+
+        {% elif project.status == "AT_RISK" %}
+
+            <span class="status at-risk">
+                🟡 AT RISK
+            </span>
+
+        {% elif project.status == "BLOCKED" %}
+
+            <span class="status blocked">
+                🔴 BLOCKED
+            </span>
+
+        {% elif project.status == "COMPLETED" %}
+
+            <span class="status completed">
+                🔵 COMPLETED
+            </span>
+
+        {% endif %}
+
+
+        <div class="owners">
+
+            <strong>Project Owners</strong>
+
+            <br>
+
+            {% for owner in project.owners.all %}
+
+                <span class="owner">
+                    {{ owner.name }}
+                </span>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+
+    <div class="grid">
+
+
+        <!-- LEFT COLUMN -->
+
+        <div>
+
+
+            <!-- MILESTONES -->
+
+            <div class="card">
+
+                <h2>
+                    Milestones & Tasks
+                </h2>
+
+
+                {% for milestone in project.milestones.all %}
+
+                <div class="milestone">
+
+                    <div class="milestone-header">
+
+                        <div class="milestone-name">
+
+                            {% if milestone.status == "DONE" %}
+                                
+                            {% elif milestone.status == "BLOCKED" %}
+                                🔴
+                            {% elif milestone.status == "IN_PROGRESS" %}
+                                
+                            {% else %}
+                                
+                            {% endif %}
+
+                            {{ milestone.name }}
+
+                        </div>
+
+
+                        <span class="milestone-status">
+
+                            {{ milestone.get_status_display }}
+
+                        </span>
+
+                    </div>
+
+
+                    <div style="margin-top: 12px; color: #6b7280; font-size: 13px;">
+
+                        Due:
+                        {{ milestone.due_date }}
+
+                    </div>
+
+
+                    {% for task in milestone.tasks.all %}
+
+                    <div class="task">
+
+                        <div>
+
+                            {% if task.status == "DONE" %}
+
+                                
+
+                            {% elif task.status == "BLOCKED" %}
+
+                                🔴
+
+                            {% elif task.status == "IN_PROGRESS" %}
+
+                                
+
+                            {% else %}
+
+                                
+
+                            {% endif %}
+
+                            {{ task.name }}
+
+                        </div>
+
+
+                        <div>
+
+                            {% if task.status == "DONE" %}
+
+                                <span class="task-status done">
+                                    DONE
+                                </span>
+
+                            {% elif task.status == "IN_PROGRESS" %}
+
+                                <span class="task-status progress">
+                                    IN PROGRESS
+                                </span>
+
+                            {% elif task.status == "BLOCKED" %}
+
+                                <span class="task-status task-blocked">
+                                    BLOCKED
+                                </span>
+
+                            {% else %}
+
+                                <span class="task-status open">
+                                    OPEN
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+                {% empty %}
+
+                    <p>No milestones available.</p>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- ACTIVITY -->
+
+            
+
+<!-- ACTIVITY & AI UPDATES -->
+
+<div class="card">
+
+    <h2>
+        Activity & Updates
+    </h2>
+
+    {% for update in project.updates.all %}
+
+    <div class="update">
+
+        <div class="update-time">
+
+            {{ update.created_at|date:"d M Y, h:i A" }}
+
+        </div>
+
+
+        <div class="update-text">
+
+            {{ update.raw_text }}
+
+        </div>
+
+
+        {% if update.structured_data %}
+
+        <div style="
+            margin-top:15px;
+            padding:15px;
+            background:#f8fafc;
+            border-radius:8px;
+            border-left:4px solid #111827;
+        ">
+
+            <strong>
+                 AI Structured Update
+            </strong>
+
+
+            <div style="margin-top:10px;">
+
+                <strong>Status:</strong>
+
+                {{ update.structured_data.project_status }}
+
+            </div>
+
+
+            {% if update.structured_data.milestone %}
+
+            <div>
+
+                <strong>Milestone:</strong>
+
+                {{ update.structured_data.milestone }}
+
+            </div>
+
+            {% endif %}
+
+
+            {% if update.structured_data.task %}
+
+            <div>
+
+                <strong>Task:</strong>
+
+                {{ update.structured_data.task }}
+
+            </div>
+
+            {% endif %}
+
+
+            {% if update.structured_data.task_status %}
+
+            <div>
+
+                <strong>Task Status:</strong>
+
+                {{ update.structured_data.task_status }}
+
+            </div>
+
+            {% endif %}
+
+
+            {% if update.structured_data.blocker %}
+
+            <div>
+
+                <strong>Blocker:</strong>
+
+                {{ update.structured_data.blocker }}
+
+            </div>
+
+            {% endif %}
+
+
+            {% if update.structured_data.owner %}
+
+            <div>
+
+                <strong>Owner:</strong>
+
+                {{ update.structured_data.owner }}
+
+            </div>
+
+            {% endif %}
+
+
+            {% if update.structured_data.eta %}
+
+            <div>
+
+                <strong>ETA:</strong>
+
+                {{ update.structured_data.eta }}
+
+            </div>
+
+            {% endif %}
+
+
+            {% if update.structured_data.summary %}
+
+            <div style="margin-top:8px;">
+
+                <strong>Summary:</strong>
+
+                {{ update.structured_data.summary }}
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    {% empty %}
+
+        <p>No updates available.</p>
+
+    {% endfor %}
+
+</div>
+
+        <!-- RIGHT COLUMN -->
+
+        <div>
+
+
+            <!-- ISSUES -->
+
+            <div class="card">
+
+                <h2>
+                    Issues
+                </h2>
+
+
+                {% for issue in project.issues.all %}
+
+                <div class="issue">
+
+                    <div class="issue-title">
+
+                        {{ issue.title }}
+
+                    </div>
+
+
+                    <span class="issue-category">
+
+                        {{ issue.get_category_display }}
+
+                    </span>
+
+
+                    <div class="issue-meta">
+
+                        Status: {{ issue.status }}
+
+                        <br>
+
+                        Priority: {{ issue.priority }}
+
+                    </div>
+
+                </div>
+
+                {% empty %}
+
+                    <p>No issues.</p>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- PROJECT INFO -->
+                         <!-- DOCUMENT VAULT -->
+
+            <div class="card">
+
+                <h2>
+                     Project Documents
+                </h2>
+
+                {% for document in project.documents.all %}
+
+                    <div style="
+                        padding: 15px 0;
+                        border-bottom: 1px solid #eeeeee;
+                    ">
+
+                        <div style="
+                            font-weight: bold;
+                            margin-bottom: 5px;
+                        ">
+
+                             {{ document.name }}
+
+                        </div>
+
+                        <div style="
+                            color: #6b7280;
+                            font-size: 12px;
+                            margin-bottom: 10px;
+                        ">
+
+                            Uploaded:
+                            {{ document.uploaded_at|date:"d M Y, h:i A" }}
+
+                            {% if document.visible_to_customer %}
+                                ·  Customer visible
+                            {% else %}
+                                ·  Internal only
+                            {% endif %}
+
+                        </div>
+
+                        <a
+                            href="{{ document.file.url }}"
+                            target="_blank"
+                            style="
+                                display: inline-block;
+                                padding: 8px 12px;
+                                background: #111827;
+                                color: white;
+                                text-decoration: none;
+                                border-radius: 6px;
+                                font-size: 13px;
+                            "
+                        >
+                            View Document
+                        </a>
+
+                    </div>
+
+                {% empty %}
+
+                    <p style="color: #6b7280;">
+                        No documents uploaded for this project.
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+            <div class="card">
+
+                <h2>
+                    Project Information
+                </h2>
+
+                <p>
+                    <strong>Start:</strong>
+                    {{ project.start_date }}
+                </p>
+
+                <p>
+                    <strong>Target:</strong>
+                    {{ project.target_date }}
+                </p>
+
+                <p>
+                    <strong>Last Updated:</strong>
+                    {{ project.last_updated|date:"d M Y, h:i A" }}
+                </p>
+
+                <p>
+                    {{ project.description }}
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+</body>
+
+</html>

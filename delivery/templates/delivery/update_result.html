@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>AI Update Analysis</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background: #f5f7fb;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .result {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .item {
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+
+        .label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .value {
+            font-weight: bold;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 18px;
+            background: #111827;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <div class="card">
+
+        <h1>
+             AI Update Analysis
+        </h1>
+
+        <p>
+            {{ project.name }}
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            Structured Project State
+        </h2>
+
+
+        <div class="result">
+
+
+            <div class="item">
+
+                <div class="label">
+                    Project Status
+                </div>
+
+                <div class="value">
+                    {{ structured_data.project_status }}
+                </div>
+
+            </div>
+
+
+            <div class="item">
+
+                <div class="label">
+                    Milestone
+                </div>
+
+                <div class="value">
+                    {{ structured_data.milestone }}
+                </div>
+
+            </div>
+
+
+            <div class="item">
+
+                <div class="label">
+                    Task
+                </div>
+
+                <div class="value">
+                    {{ structured_data.task }}
+                </div>
+
+            </div>
+
+
+            <div class="item">
+
+                <div class="label">
+                    Task Status
+                </div>
+
+                <div class="value">
+                    {{ structured_data.task_status }}
+                </div>
+
+            </div>
+
+
+            <div class="item">
+
+                <div class="label">
+                    Blocker
+                </div>
+
+                <div class="value">
+                    {{ structured_data.blocker }}
+                </div>
+
+            </div>
+
+
+            <div class="item">
+
+                <div class="label">
+                    Owner
+                </div>
+
+                <div class="value">
+                    {{ structured_data.owner }}
+                </div>
+
+            </div>
+
+
+            <div class="item">
+
+                <div class="label">
+                    ETA
+                </div>
+
+                <div class="value">
+                    {{ structured_data.eta }}
+                </div>
+
+            </div>
+
+
+            <div class="item">
+
+                <div class="label">
+                    Issue Category
+                </div>
+
+                <div class="value">
+                    {{ structured_data.issue_category }}
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            AI Summary
+        </h2>
+
+        <p>
+            {{ structured_data.summary }}
+        </p>
+
+    </div>
+
+
+    <div style="display: flex; gap: 12px;">
+
+    <a
+        class="button"
+        href="{% url 'project_detail' project.id %}"
+    >
+        ← View Updated Project
+    </a>
+
+    <a
+        class="button"
+        href="{% url 'project_kanban' project.id %}"
+        style="background: #374151;"
+    >
+         View Kanban
+    </a>
+
+</div>
+
+
+</div>
+
+</body>
+
+</html>
